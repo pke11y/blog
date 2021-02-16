@@ -103,7 +103,7 @@ We'll demonstrate the use of some common operators used in the `jmespath` query 
 | [<index0>, <index1>, ..] |	Indexing array elements, like a list.|
 | [?<expression>] |	Filter expression. Boolean evaluation|
 | && |	AND expression.
-| | |	Pipe expression, like unix pipe.|
+| &#124; |	Pipe expression, like unix pipe.|
 | &<expression> |	Using an expression evaluation as a data type.|
 
 
