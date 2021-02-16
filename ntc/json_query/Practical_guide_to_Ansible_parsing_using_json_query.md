@@ -260,7 +260,3 @@ The `json_query` filter is a powerful tool to have at your disposal. It can solv
 - [https://jmespath.org/specification.html](https://jmespath.org/specification.html)
 - [https://jmespath.org/tutorial.html](https://jmespath.org/tutorial.html)
 
-### 
-
-- https://stackoverflow.com/questions/42090503/how-to-compare-with-the-current-node-in-jmespath
-- https://stackoverflow.com/questions/42396971/jmespath-find-where-not-exists
