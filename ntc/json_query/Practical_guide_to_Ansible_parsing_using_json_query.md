@@ -95,16 +95,16 @@ On Palo Alto devices the stdout response is returned as a JSON encoded string. F
 We'll demonstrate the use of some common operators used in the `jmespath` query language. By no means is this an exhaustive list. Please refer to references at the end of the blog to see the specification.
 
 ### JMESPath Operators
-|Operator| Description |
+| Operator | Description |
 | --- | --- |
-|@|	The current node being evaluated.|
-|*|	Wildcard. All elements.|
-|.*key* |	Dot-notation to access a value of the given key.|
-| [*index0*, *index1*, ..] |	Indexing array elements, like a list.|
-| [?*expression*] |	Filter expression. Boolean evaluation|
+| @ |	The current node being evaluated.|
+| * |	Wildcard. All elements.|
+| .*key* |	Dot-notation to access a value of the given key. |
+| [*index0*, *index1*, ..] |	Indexing array elements, like a list. |
+| [?*expression*] | Filter expression. Boolean evaluation |
 | && |	AND expression.
-| &#124; |	Pipe expression, like unix pipe.|
-| &<expression> |	Using an expression evaluation as a data type.|
+| &#124; |	Pipe expression, like unix pipe. |
+| &*expression* |	Using an expression evaluation as a data type. |
 
 
 ### Basic Filter
