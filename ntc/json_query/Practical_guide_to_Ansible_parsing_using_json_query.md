@@ -17,7 +17,7 @@ This blog post will focus on giving practical examples of the `json_query` filte
 
 As mentioned, `json_query` filter uses a third-party library, so this must be installed on the host before the filter can be used in a play.
 
-```python
+```
 pip install jmespath
 ```
 
@@ -25,7 +25,7 @@ pip install jmespath
 
 To demonstrate how the filter can be used, we'll query against the following dataset. Those familiar with Palo Alto firewalls will recognise the data as a modified version of the `stdout` result of an application content update query.
 
-```python
+```
 response:
       result:
         content-updates:
@@ -84,7 +84,7 @@ response:
 
 On Palo Alto devices the stdout response is returned as a JSON encoded string. For convenience, we'll set a variable to focus on the `json_query` string part of the filter in the examples. 
 
-```python
+```
 - name: "SET FACT FOR DEVICE STDOUT RESPONSE"
   set_fact:
     result: "{{ (content_info['stdout'] | from_json)['response']['result'] }}"
@@ -113,13 +113,13 @@ Using our result data, we pass the valid JSON into the filter with an additional
 
 In the basic filter example, the query string will select the `version` key for each element in the `entry` array.
 
-```python
+```
 - name: "BASIC FILTER"
   debug:
     msg: "{{ result['content-updates'] | json_query('entry[*].version') }}
 ```
 
-```python
+```
 TASK [BASIC FILTER - VERSION] ***************************************************
 ok: [demo-fw01] =>
   msg:
@@ -141,7 +141,7 @@ Returning a list is not always convenient. We can use the pipe expression to sel
 
 Here, we select the first element. Array indexing begins at zero.
 
-```python
+```
 - name: "ARRAY INDEX VALUE"
   debug:
     msg: "{{ result['content-updates'] | json_query('entry[*].version | [0]') }}"
@@ -149,7 +149,7 @@ Here, we select the first element. Array indexing begins at zero.
 
 The response output is a string value for the first element in the array.
 
-```python
+```
 TASK [ARRAY INDEX VALUE] *********************************************************
 ok: [demo-fw01] =>
   msg: 8368-6520
@@ -161,7 +161,7 @@ Using a filter expression within the `json_query` string, we can filter the quer
 
 If we only wanted to get the filenames of the software version that are actually downloaded on the device, we can an evaluate against the objects that have `downloaded=='yes'`. The ability to filter datasets, within Ansible playbooks, using a subset of attributes as the selection criteria and select another set of attribute values is extremely useful.
 
-```python
+```
 - name: "FILTER EXACT MATCH"
   debug:
     msg: "{{ result['content-updates'] | json_query('entry[?downloaded==`yes`].filename') }}"
@@ -169,7 +169,7 @@ If we only wanted to get the filenames of the software version that are actually
 
 The output, shows the list of filenames returned.
 
-```python
+```
 TASK [FILTER EXACT MATCH] ********************************************************
 ok: [demo-fw01] =>
   msg:
@@ -185,7 +185,7 @@ Using a variable for the query string is in many ways a cleaner approach. How st
 
 In our example we're selecting the filename of the maximum `app-version` value from the `entry` array. The `&` allows us to define an expression which will be evaluated as a data type when processed by the function. 
 
-```python
+```
 - name: "MAX BY APP-VERSION"
   set_fact:
     content_file: "{{ result['content-updates'] | json_query(querystr) }}"
@@ -195,7 +195,7 @@ In our example we're selecting the filename of the maximum `app-version` value f
 
 The resulting `filename` value is returned.
 
-```python
+```
 TASK [JMESPATH FUNCTION] *********************************************************
 ok: [demo-fw01] =>
   msg: panupv2-all-apps-8373-6537
@@ -203,12 +203,12 @@ ok: [demo-fw01] =>
 
 Using single quotes in the previous example instructs the filter to treat the expression as a string, returning the first element of the array.
 
-```python
+```
 vars:
   querystr: "max_by(entry, &'app-version').filename"
 ```
 
-```python
+```
 TASK [MAX BY APP-VERSION] *******************************************************
 ok: [demo-fw01] =>
   msg: panupv2-all-apps-8368-6520
@@ -218,9 +218,9 @@ ok: [demo-fw01] =>
 
 You can also pass other ansible facts into the query string. Again, quoting is important, so it will be better to provide a separate string to pass into the filter. 
 
-Here, we'll use the filter expression with another built-in function `contains` that provides a boolean result based on a match with a search string on any element with the `version` array. The search string in this case is an ansible variable passed into the query string using a jinja2 template. 
+In this example the filter expression is used with another built-in function `contains`. This function provides a boolean result based on a match with a search string, on any element within the `version` array. The search string in this case is an Ansible variable passed into the query using a jinja2 template. 
 
-```python
+```
 - name: "FUNCTION WITH VARIABLE"
   debug:
     msg: "{{ result['content-updates'] | json_query(querystr) }}"
@@ -231,7 +231,7 @@ Here, we'll use the filter expression with another built-in function `contains` 
 
 Again, we're selecting the first filename within the returned list using the indexing capability. 
 
-```python
+```
 TASK [FUNCTION WITH VARIABLE] **************************************************
 ok: [demo-fw01] =>
   msg: panupv2-all-apps-8368-6520
@@ -241,7 +241,7 @@ ok: [demo-fw01] =>
 
 We can also evaluate multiple expressions using the logical AND operation. This follows the normal truth table rules. Along with the filter operator, we provide two expressions that will evaluate to a boolean value. This will filter the resulting data based on two selection criteria and provide a list of version values. 
 
-```python
+```
 - name: "MULTIPLE FILTER EXPRESSIONS"
   debug:
     msg: "{{ result['content-updates']  | json_query(querystr) }}"
@@ -252,7 +252,7 @@ We can also evaluate multiple expressions using the logical AND operation. This 
 
 In this case, we only have one element in the list.
 
-```python
+```
 TASK [MULTIPLE FILTER EXPRESSIONS] ***********************************************
 ok: [demo-fw01] =>
   msg:
