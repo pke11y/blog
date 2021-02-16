@@ -99,12 +99,12 @@ We'll demonstrate the use of some common operators used in the `jmespath` query 
 | --- | --- |
 |@|	The current node being evaluated.|
 |*|	Wildcard. All elements.|
-|.<key>|	Dot-notation to access a value of the given key.|
-|[<index0>, <index1>, ..]|	Indexing array elements, like a list.|
-|[?<expression>]|	Filter expression. Boolean evaluation|
-|&&|	AND expression.
-|||	Pipe expression, like unix pipe.|
-|&<expression>|	Using an expression evaluation as a data type.|
+|.<key> |	Dot-notation to access a value of the given key.|
+| [<index0>, <index1>, ..] |	Indexing array elements, like a list.|
+| [?<expression>] |	Filter expression. Boolean evaluation|
+| && |	AND expression.
+| | |	Pipe expression, like unix pipe.|
+| &<expression> |	Using an expression evaluation as a data type.|
 
 
 ### Basic Filter
