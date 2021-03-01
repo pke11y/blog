@@ -7,15 +7,13 @@ Parsing structured JSON data in Ansible playbooks is a common task. Nowadays, th
 - object - an unordered collection of key/value pairs (like Python `dict`)
 - array - an ordered sequence of objects  (like Python `list`)
 
-Ansible provides many built-in capabilities to consume JSON using Ansible specific filters or the jinja2 built-in filters. Sometimes the number of filters to learn and which filters to select for a given use case can be a little daunting when starting out. More often than not, multiple filters need to be chained together to achieve a desired result. This can lead to complex task definition, making playbook maintenance more difficult.
+Ansible provides many built-in capabilities to consume JSON using Ansible specific filters or the jinja2 built-in filters. The extensive filters available, and what to use and when, can be overwhelming at first and the desired result can often require multiple filters chained together. This can lead to complex task definition, making playbook maintenance more difficult.
 
-The built-in `json_query` filter provides the functionality for filtering, shaping and transforming JSON data. It uses the third-party `jmespath` library, which is a powerful JSON query language supporting the parsing pf complex structured data. 
-
-This blog post will focus on giving practical examples of the `json_query` filter and some of the extended capabilities integrated in the `jmespath` library.   
+The built-in `json_query` filter provides the functionality for filtering, shaping and transforming JSON data. It uses the third-party `jmespath` library, a powerful JSON query language supporting the parsing pf complex structured data. 
 
 ### Setup
 
-As mentioned, `json_query` filter uses a third-party library, so this must be installed on the host before the filter can be used in a play.
+The `jmespath` third-party library must be installed on the host for the json_query filter to operate.
 
 ```
 pip install jmespath
@@ -23,7 +21,7 @@ pip install jmespath
 
 ### Data
 
-To demonstrate how the filter can be used, we'll query against the following dataset. Those familiar with Palo Alto firewalls will recognise the data as a modified version of the `stdout` result of an application content update query.
+Those familiar with Palo Alto firewalls will recognise a modified version of an application content update query. This result dataset will be used to demonstrate how to manipulate JSON data using the `json_query` filter. 
 
 ```
 response:
@@ -82,7 +80,7 @@ response:
             version: 8372-6534
 ```
 
-On Palo Alto devices the stdout response is returned as a JSON encoded string. For convenience, we'll set a variable to focus on the `json_query` string part of the filter in the examples. 
+On Palo Alto devices the `stdout` response is returned as a JSON encoded string. A variable was set to simplify the following examples. 
 
 ```
 - name: "SET FACT FOR DEVICE STDOUT RESPONSE"
@@ -92,7 +90,7 @@ On Palo Alto devices the stdout response is returned as a JSON encoded string. F
 
 ## Practical examples
 
-We'll demonstrate the use of some common operators used in the `jmespath` query language. By no means is this an exhaustive list. Please refer to references at the end of the blog to see the specification.
+The JMESPath Operators table below summarises some of the most common operators used in the jmespath query language. See references at the end for the jmespath specification.
 
 ### JMESPath Operators
 | Operator | Description |
@@ -109,9 +107,9 @@ We'll demonstrate the use of some common operators used in the `jmespath` query 
 
 ### Basic Filter
 
-Using our result data, we pass the valid JSON into the filter with an additional query string argument. The query string will provide the expression that is evaluated against the data to return a result. The default data type returned by `json_query` filter is a list.
+Using the result data, the filter is applied to the valid JSON result with an additional query string argument. The query string provides the expression that is evaluated against the data to return filtered output. The default data type returned by json_query filter is a list.
 
-In the basic filter example, the query string will select the `version` key for each element in the `entry` array.
+In the Basic Filter example below, the query string selects the version key for each element in the entry array.
 
 ```
 - name: "BASIC FILTER"
@@ -137,9 +135,9 @@ ok: [demo-fw01] =>
 
 ### Return Array Element
 
-Returning a list is not always convenient. We can use the pipe expression to select the value of a array by specifying a certain index location. This operates in much the same way as the unix pipe, within the query string. 
+A pipe expression can be used to select the value of an array by declaring the desired index location. This operates in much the same way as the unix pipe, within the query string.  
 
-Here, we select the first element. Array indexing begins at zero.
+In the Array Index example below, the first element is selected. Array indexing begins at zero.
 
 ```
 - name: "ARRAY INDEX VALUE"
