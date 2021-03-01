@@ -177,10 +177,9 @@ ok: [demo-fw01] =>
 
 ### Function
 
-The `jmespath` library provides built-in functions to assist in transformation and filtering tasks, for example the `max_by` function that returns the maximum element in an array. In the following task selects the filename of the maximum `app-version` value from the `entry` array. The `&` provides the ability to define an expression which will be evaluated as a data type value when processed by the function. 
+The `jmespath` library provides built-in functions to assist in transformation and filtering tasks, for example the `max_by` function that returns the maximum element in an array. The following task selects the filename of the maximum `app-version` value from the `entry` array. The `&` provides the ability to define an expression which will be evaluated as a data type value when processed by the function. 
 
-Using a variable for the query string is in many ways a cleaner approach to the query definition. How strings are quoted matters when the key name is hyphenated. in this case the query string should include double quotes `"key-name"` around the key name, which is required by the `jmespath` specification. None hypenathed keys do not need double quotes.
-
+Using a variable for the query string can be a cleaner approach to the query definition. String quotations are necessary when the key name is hyphenated. In this case, the `jmespath` specification requires the key name within quotation marks e.g. `"key-name"`. Where key names are not hypenathed, quotation marks are not required.
 
 ```
 - name: "MAX BY APP-VERSION"
@@ -213,9 +212,9 @@ ok: [demo-fw01] =>
 
 ### Query String with Dynamic Variable
 
-Ansible facts can be substituted into the query string. Again, quoting is important, so it will be better to provide a separate string to pass into the filter. 
+Ansible facts can be substituted into the query string. Again, quotation marks are relevant, so it is preferable to define a separate string as a variable within the task. 
 
-In this example the filter expression is used with another built-in function `contains`. This function provides a boolean result based on a match with a search string, on any element within the `version` array. The search string in this case is an Ansible variable passed into the query using a jinja2 template. 
+In this example the filter expression is used with a built-in function, `contains`. This function provides a boolean result, based on a match with a search string, on any element within the `version` array. The search string in this case is an Ansible variable passed into the query using a jinja2 template. 
 
 ```
 - name: "FUNCTION WITH VARIABLE"
@@ -226,7 +225,7 @@ In this example the filter expression is used with another built-in function `co
     content_version: "8368-6520"
 ```
 
-Again, we're selecting the first filename within the returned list using the indexing capability. 
+Again, the first filename, within the returned list using the indexing capability, has been selected.  
 
 ```
 TASK [FUNCTION WITH VARIABLE] **************************************************
@@ -236,7 +235,7 @@ ok: [demo-fw01] =>
 
 ### Multiple Expressions
 
-Multiple expressions can be evaluated using the logical AND operation. This follows the normal truth table rules. Along with the filter operator, we provide two expressions that will evaluate to a boolean value. This will filter the resulting data based on two selection criteria and provide a list of version values. 
+Multiple expressions can be evaluated using the logical AND operation, following the normal truth table rules. Along with the filter operator, two expressions are provided to be evaluated. This will filter the resulting data based on two selection criteria and provide a list of `version` values. 
 
 ```
 - name: "MULTIPLE FILTER EXPRESSIONS"
@@ -247,7 +246,7 @@ Multiple expressions can be evaluated using the logical AND operation. This foll
     version: "8373-6537"
 ```
 
-In this case, we only have one element in the list.
+In this case, one element is returned in the list.
 
 ```
 TASK [MULTIPLE FILTER EXPRESSIONS] ***********************************************
@@ -258,9 +257,11 @@ ok: [demo-fw01] =>
 
 ### Conclusion
 
-The `jmespath` specification has some very good documentation and support for numerous languages. It does require learning a new query language but hopefully this guide will help you get started with some common use cases. 
+The `jmespath` specification has good documentation and support for numerous languages. It requires learning a new query language but hopefully this guide will help you get started with some common use cases. 
 
 The `json_query` filter is a powerful tool to have at your disposal. It can solve many JSON parsing tasks within your playbook, avoiding the need to write custom filters. If you'd like to see more please let us know.
+
+-- Paddy
 
 ### References
 
