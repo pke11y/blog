@@ -179,12 +179,7 @@ ok: [demo-fw01] =>
 
 The `jmespath` library provides built-in functions to assist in transformation and filtering tasks, for example the `max_by` function that returns the maximum element in an array. In the following task selects the filename of the maximum `app-version` value from the `entry` array. The `&` provides the ability to define an expression which will be evaluated as a data type value when processed by the function. 
 
-Some of the built-in functions are similar to existing filters supported in Ansible or jinja2. 
-
-Using a variable for the query string is in many ways a cleaner approach. How strings are quoted actually matters when the key name is hyphenated. The query string should include double quotes `"key-name"` around the key name, which is required by the `jmespath` specification.
-
-and also how we can use unconventional variable names in our query.
-
+Using a variable for the query string is in many ways a cleaner approach to the query definition. How strings are quoted matters when the key name is hyphenated. in this case the query string should include double quotes `"key-name"` around the key name, which is required by the `jmespath` specification. None hypenathed keys do not need double quotes.
 
 
 ```
@@ -218,7 +213,7 @@ ok: [demo-fw01] =>
 
 ### Query String with Dynamic Variable
 
-You can also pass other ansible facts into the query string. Again, quoting is important, so it will be better to provide a separate string to pass into the filter. 
+Ansible facts can be substituted into the query string. Again, quoting is important, so it will be better to provide a separate string to pass into the filter. 
 
 In this example the filter expression is used with another built-in function `contains`. This function provides a boolean result based on a match with a search string, on any element within the `version` array. The search string in this case is an Ansible variable passed into the query using a jinja2 template. 
 
@@ -241,7 +236,7 @@ ok: [demo-fw01] =>
 
 ### Multiple Expressions
 
-We can also evaluate multiple expressions using the logical AND operation. This follows the normal truth table rules. Along with the filter operator, we provide two expressions that will evaluate to a boolean value. This will filter the resulting data based on two selection criteria and provide a list of version values. 
+Multiple expressions can be evaluated using the logical AND operation. This follows the normal truth table rules. Along with the filter operator, we provide two expressions that will evaluate to a boolean value. This will filter the resulting data based on two selection criteria and provide a list of version values. 
 
 ```
 - name: "MULTIPLE FILTER EXPRESSIONS"
