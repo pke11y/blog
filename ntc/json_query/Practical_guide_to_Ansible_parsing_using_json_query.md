@@ -155,9 +155,9 @@ ok: [demo-fw01] =>
 
 ### Filter
 
-Using a filter expression within the `json_query` string, we can filter the query result using a boolean expression.
+Using a filter expression within the `json_query` string, the query result can be filtered using standard comparison operators. A filter expression allows each element of the array to be evaluated against the expression. If it evaluates to true, the element is included in the returned result.
 
-If we only wanted to get the filenames of the software version that are actually downloaded on the device, we can an evaluate against the objects that have `downloaded=='yes'`. The ability to filter datasets, within Ansible playbooks, using a subset of attributes as the selection criteria and select another set of attribute values is extremely useful.
+The equality comparision operator is used in the following example to retrieve the filename(s) of the software version(s) downloaded on the device. Elements in the array that have `downloaded=='yes'` will have the `filename` included in the returned result. This provides the ability to use certain attributes for the selection criteria, and return the value(s) of other attributes for the result.
 
 ```
 - name: "FILTER EXACT MATCH"
@@ -177,11 +177,15 @@ ok: [demo-fw01] =>
 
 ### Function
 
-The `jmespath` library provides built-in functions to assist in transformation and filtering tasks. Some are quite similar to existing filters in Ansible or jinja2 but we'll take a look at the `max_by` function and also how we can use unconventional variable names in our query.
+The `jmespath` library provides built-in functions to assist in transformation and filtering tasks, for example the `max_by` function that returns the maximum element in an array. In the following task selects the filename of the maximum `app-version` value from the `entry` array. The `&` provides the ability to define an expression which will be evaluated as a data type value when processed by the function. 
 
-Using a variable for the query string is in many ways a cleaner approach. How strings are quoted actually matters when the key name is hyphenated. The query string should include double quotes `"key-name"` around the key name, which is required by the `jmespath` specification 
+Some of the built-in functions are similar to existing filters supported in Ansible or jinja2. 
 
-In our example we're selecting the filename of the maximum `app-version` value from the `entry` array. The `&` allows us to define an expression which will be evaluated as a data type when processed by the function. 
+Using a variable for the query string is in many ways a cleaner approach. How strings are quoted actually matters when the key name is hyphenated. The query string should include double quotes `"key-name"` around the key name, which is required by the `jmespath` specification.
+
+and also how we can use unconventional variable names in our query.
+
+
 
 ```
 - name: "MAX BY APP-VERSION"
