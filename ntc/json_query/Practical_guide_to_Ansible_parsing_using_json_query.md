@@ -1,4 +1,4 @@
-# Practical guide to Ansible parsing using json_query
+# Filter JSON Data in Ansible Using json_query
 
 ## Intro
 
