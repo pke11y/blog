@@ -157,7 +157,7 @@ ok: [demo-fw01] =>
 
 Using a filter expression within the `json_query` string, the query result can be filtered using standard comparison operators. A filter expression allows each element of the array to be evaluated against the expression. If it evaluates to true, the element is included in the returned result.
 
-The equality comparision operator is used in the following example to retrieve the filename(s) of the software version(s) downloaded on the device. Elements in the array that have `downloaded=='yes'` will have the `filename` included in the returned result. This provides the ability to use certain attributes for the selection criteria, and return the value(s) of other attributes for the result.
+The equality comparision operator is used in the following example to retrieve the filename(s) of the software version(s) downloaded on the device. Elements in the array that have `downloaded=='yes'` will have the `filename` included in the returned result. This provides the ability to use certain keys for the selection criteria, and return the value(s) of other keys for the result.
 
 ```
 - name: "FILTER EXACT MATCH"
@@ -179,7 +179,7 @@ ok: [demo-fw01] =>
 
 The `jmespath` library provides built-in functions to assist in transformation and filtering tasks, for example the `max_by` function that returns the maximum element in an array. The following task selects the filename of the maximum `app-version` value from the `entry` array. The `&` provides the ability to define an expression which will be evaluated as a data type value when processed by the function. 
 
-Using a variable for the query string can be a cleaner approach to the query definition. String quotations are necessary when the key name is hyphenated. In this case, the `jmespath` specification requires the key name within quotation marks e.g. `"key-name"`. Where key names are not hypenathed, quotation marks are not required.
+Using an Ansible variable for the query string can be a cleaner approach to the query definition. It also helps with string quotations that are necessary when the key name is hyphenated. When using an expression data type, the `jmespath` library requires the key name within quotation marks e.g. `&"key-name"`. Where key names are not hypenathed, quotation marks are not required e.g. `&keyname`
 
 ```
 - name: "MAX BY APP-VERSION"
